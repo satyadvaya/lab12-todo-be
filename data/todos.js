@@ -3,7 +3,7 @@ module.exports = [
     id: 1,
     todo: 'do laundry',
     completed: true,
-    user_id: 2
+    user_id: 1
   },
   {
     id: 2,
