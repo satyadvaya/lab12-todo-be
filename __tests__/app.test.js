@@ -17,7 +17,8 @@ describe('app routes', () => {
       const signInData = await fakeRequest(app)
         .post('/auth/signup')
         .send({
-          email: 'jon@user.com',
+          // email: 'jon@user.com',
+          email: 'bob@gmail.com',
           password: '1234'
         });
       
@@ -28,31 +29,63 @@ describe('app routes', () => {
       return client.end(done);
     });
 
-    test('returns animals', async() => {
+    test.only('authorized user may post a new todo', async() => {
+
+      const newTodo = {
+        todo: 'take nap',
+        completed: false,
+        user_id: 3
+      };
+
+      const expectation = {
+        id: 4,
+        todo: 'take nap',
+        completed: false,
+        user_id: 3
+      };
+
+      const data = await fakeRequest(app)
+        .post('/api/todos')
+        .send(newTodo)
+        .set('Authorization', token)
+        .expect('Content-Type', /json/);
+        // .expect(200);
+
+      expect(data.body).toEqual(expectation);
+    });
+
+    test('GET /todos returns list of todos', async() => {
 
       const expectation = [
         {
-          'id': 1,
-          'name': 'bessie',
-          'cool_factor': 3,
-          'owner_id': 1
+          id: 1,
+          todo: 'do laundry',
+          completed: true,
+          user_id: 1
         },
         {
-          'id': 2,
-          'name': 'jumpy',
-          'cool_factor': 4,
-          'owner_id': 1
+          id: 2,
+          todo: 'learn Sanskrit',
+          completed: false,
+          user_id: 1
         },
         {
-          'id': 3,
-          'name': 'spot',
-          'cool_factor': 10,
-          'owner_id': 1
+          id: 3,
+          todo: 'rid world of violence',
+          completed: false,
+          user_id: 1
+        },
+        {
+          id: 4,
+          todo: 'take nap',
+          completed: false,
+          user_id: 3
         }
       ];
 
       const data = await fakeRequest(app)
-        .get('/animals')
+        .get('/api/todos')
+        .set('Authorization', token)
         .expect('Content-Type', /json/)
         .expect(200);
 
