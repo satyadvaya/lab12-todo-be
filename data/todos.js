@@ -9,12 +9,12 @@ module.exports = [
     id: 2,
     todo: 'learn Sanskrit',
     completed: false,
-    user_id: 2
+    user_id: 1
   },
   {
     id: 3,
     todo: 'rid world of violence',
     completed: false,
-    user_id: 2
+    user_id: 1
   }
 ];
